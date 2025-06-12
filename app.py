@@ -107,4 +107,4 @@ st.markdown("""
 -   **Clip Limit:** Mengontrol seberapa besar kontras dapat ditingkatkan. Nilai yang lebih rendah menghasilkan peningkatan kontras yang lebih halus, sementara nilai yang lebih tinggi menghasilkan kontras yang lebih tajam tetapi berpotensi memperkuat noise.
 -   **Tile Grid Size (Rows/Cols):** Menentukan ukuran dan jumlah *tile* tempat histogram lokal dihitung. Ukuran *tile* yang lebih kecil memungkinkan adaptasi yang lebih baik terhadap variasi kontras lokal, tetapi juga bisa lebih sensitif terhadap noise.
 """)
-st.markdown("Sumber implementasi CLAHE: OpenCV.")
+st.markdown("Sumber implementasi CLAHE: OpenCV")
