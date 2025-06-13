@@ -10,7 +10,7 @@ st.set_page_config(page_title="Aplikasi Peningkatan Citra CLAHE", layout="wide")
 # Judul Aplikasi
 st.title("🖼️ Aplikasi Peningkatan Citra menggunakan CLAHE")
 st.markdown("""
-Aplikasi ini memungkinkan Anda untuk mengunggah sebuah gambar dan menerapkan 
+Aplikasi ini untuk meng-upload gambar dan menerapkan 
 *Contrast Limited Adaptive Histogram Equalization* (CLAHE) untuk meningkatkan kontras lokalnya. 
 Anda dapat menyesuaikan parameter CLAHE melalui menu di sebelah kiri.
 """)
@@ -43,7 +43,7 @@ tile_cols = st.sidebar.slider(
 )
 
 # File uploader
-uploaded_file = st.file_uploader("Unggah gambar (JPG, JPEG, PNG)", type=["jpg", "jpeg", "png"])
+uploaded_file = st.file_uploader("Upload gambar (JPG, JPEG, PNG)", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
     # Membaca gambar yang diunggah
@@ -58,7 +58,7 @@ if uploaded_file is not None:
 
     with col1:
         st.subheader("Gambar Asli")
-        st.image(image_pil, use_column_width=True, caption="Gambar yang diunggah")
+        st.image(image_pil, use_container_width=True, caption="Gambar yang diunggah")
 
     # Terapkan CLAHE
     # Fungsi apply_clahe akan mengembalikan citra grayscale
@@ -67,7 +67,7 @@ if uploaded_file is not None:
     with col2:
         st.subheader("Hasil Peningkatan CLAHE")
         # Menampilkan citra grayscale hasil CLAHE
-        st.image(enhanced_image_gray, use_column_width=True, caption="Gambar setelah CLAHE", channels="GRAY", clamp=True)
+        st.image(enhanced_image_gray, use_container_width=True, caption="Gambar setelah CLAHE", channels="GRAY", clamp=True)
         
     # Opsi untuk mengunduh gambar hasil
     # Konversi numpy array ke format yang bisa diunduh (misalnya, PNG dalam bytes)
@@ -78,7 +78,7 @@ if uploaded_file is not None:
         enhanced_pil.save(buf, format="PNG")
         byte_im = buf.getvalue()
         st.download_button(
-            label="Unduh Gambar Hasil",
+            label="Download Gambar Hasil",
             data=byte_im,
             file_name="enhanced_clahe_image.png",
             mime="image/png"
