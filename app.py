@@ -46,7 +46,7 @@ tile_cols = st.sidebar.slider(
 uploaded_file = st.file_uploader("Upload gambar (JPG, JPEG, PNG)", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
-    # Membaca gambar yang diunggah
+    # Membaca gambar yang diupload
     image_pil = Image.open(uploaded_file).convert("RGB")
     image_np_rgb = np.array(image_pil)
     
@@ -58,7 +58,7 @@ if uploaded_file is not None:
 
     with col1:
         st.subheader("Gambar Asli")
-        st.image(image_pil, use_container_width=True, caption="Gambar yang diunggah")
+        st.image(image_pil, use_container_width=True, caption="Gambar yang diupload")
 
     # Terapkan CLAHE
     # Fungsi apply_clahe akan mengembalikan citra grayscale
@@ -88,7 +88,7 @@ if uploaded_file is not None:
 
 
 else:
-    st.info("ℹ️ Silakan unggah gambar untuk memulai.")
+    st.info("ℹ️ Silakan upload gambar untuk memulai.")
 
 # Penjelasan tentang CLAHE
 st.markdown("---")
