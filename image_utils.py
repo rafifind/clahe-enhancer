@@ -20,31 +20,21 @@ def apply_clahe(image_bgr, clip_limit=2.0, tile_grid_size=(8, 8)):
                        citra grayscale asli atau channel pertama dari citra BGR input.
     """
     try:
-        # Langkah 1: Konversi citra BGR ke grayscale
-        # CLAHE biasanya diterapkan pada citra single-channel (grayscale).
+        
         gray_image = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2GRAY)
 
-        # Langkah 2: Buat objek CLAHE dengan parameter yang diberikan
-        # clipLimit: Batas kontras. Mencegah amplifikasi noise yang berlebihan.
-        # tileGridSize: Ukuran grid untuk pemrosesan adaptif lokal.
         clahe_obj = cv2.createCLAHE(clipLimit=clip_limit, tileGridSize=tile_grid_size)
 
-        # Langkah 3: Terapkan CLAHE pada citra grayscale
         enhanced_gray_image = clahe_obj.apply(gray_image)
 
         return enhanced_gray_image
     except Exception as e:
-        # Penanganan error dasar jika terjadi masalah selama proses CLAHE
+        
         print(f"Error in apply_clahe: {e}")
-        # Fallback: Jika konversi ke grayscale berhasil tetapi CLAHE gagal, kembalikan grayscale asli.
+        
         if 'gray_image' in locals():
             return gray_image
         else:
-            # Fallback lebih lanjut: Jika bahkan konversi ke grayscale gagal,
-            # coba kembalikan channel pertama dari citra BGR (misalnya, channel Biru).
-            # Ini adalah fallback kasar dan mungkin perlu penanganan yang lebih baik
-            # tergantung pada kebutuhan aplikasi (misalnya, log error yang lebih detail atau raise exception).
-            # Memastikan citra memiliki 3 dimensi (untuk citra berwarna) sebelum mencoba slicing.
             return image_bgr[:,:,0] if len(image_bgr.shape) == 3 and image_bgr.shape[2] == 3 else image_bgr
 
 
