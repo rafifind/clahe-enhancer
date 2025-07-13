@@ -2,21 +2,21 @@ import streamlit as st
 from PIL import Image
 import numpy as np
 import cv2
-from image_utils import apply_clahe # Mengimpor fungsi dari image_utils.py
+from image_utils import apply_clahe 
 
-# Konfigurasi halaman Streamlit: judul tab browser dan tata letak
+
 st.set_page_config(page_title="Aplikasi Peningkatan Citra CLAHE", layout="wide")
 
-# Judul Utama Aplikasi
+
 st.title("🖼️ Aplikasi Peningkatan Citra menggunakan CLAHE")
-# Deskripsi singkat aplikasi menggunakan Markdown
+
 st.markdown("""
 Aplikasi ini untuk meng-upload gambar dan menerapkan
 *Contrast Limited Adaptive Histogram Equalization* (CLAHE) untuk meningkatkan kontras lokalnya.
 Anda dapat menyesuaikan parameter CLAHE melalui menu di sebelah kiri.
 """)
 
-# === Sidebar untuk Input Parameter CLAHE ===
+
 st.sidebar.title("🔧 Parameter CLAHE")
 clip_limit = st.sidebar.slider(
     "Clip Limit",
@@ -43,19 +43,19 @@ tile_cols = st.sidebar.slider(
     help="Jumlah kolom dalam grid tile."
 )
 
-# === Logika Utama Aplikasi: Unggah dan Proses Gambar ===
+
 uploaded_file = st.file_uploader("Upload gambar (JPG, JPEG, PNG)", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
-    # Membaca gambar yang diunggah menggunakan PIL dan konversi ke format RGB
+    
     image_pil = Image.open(uploaded_file).convert("RGB")
-    # Konversi gambar PIL ke array NumPy
+    
     image_np_rgb = np.array(image_pil)
 
-    # OpenCV menggunakan format BGR, jadi konversi dari RGB ke BGR
+    
     image_bgr = cv2.cvtColor(image_np_rgb, cv2.COLOR_RGB2BGR)
 
-    # Membuat dua kolom untuk tata letak berdampingan: gambar asli dan hasil
+    
     col1, col2 = st.columns(2)
 
     with col1:
@@ -63,42 +63,39 @@ if uploaded_file is not None:
         # Menampilkan gambar asli, disesuaikan dengan lebar kolom
         st.image(image_pil, use_container_width=True, caption="Gambar yang diupload")
 
-    # Menerapkan algoritma CLAHE pada gambar BGR
-    # Fungsi apply_clahe mengembalikan citra grayscale yang telah ditingkatkan
+    
     enhanced_image_gray = apply_clahe(image_bgr, clip_limit=clip_limit, tile_grid_size=(tile_rows, tile_cols))
 
     with col2:
         st.subheader("Hasil Peningkatan CLAHE")
-        # Menampilkan citra grayscale hasil CLAHE
-        # channels="GRAY" penting untuk memberitahu Streamlit cara menampilkannya
-        # clamp=True memastikan nilai piksel berada dalam rentang valid 
+        
         st.image(enhanced_image_gray, use_container_width=True, caption="Gambar setelah CLAHE", channels="GRAY", clamp=True)
 
-    # === Logika Tombol Unduh untuk Gambar Hasil ===
+    
     try:
-        # Konversi array NumPy hasil CLAHE (grayscale) kembali ke objek gambar PIL
+        
         enhanced_pil = Image.fromarray(enhanced_image_gray)
-        from io import BytesIO # Impor lokal untuk menghindari impor global jika tidak selalu dibutuhkan
+        from io import BytesIO
         buf = BytesIO()
-        # Simpan gambar PIL ke buffer dalam format PNG
+        
         enhanced_pil.save(buf, format="PNG")
-        byte_im = buf.getvalue() # Dapatkan byte gambar dari buffer
+        byte_im = buf.getvalue()
 
         st.download_button(
             label="Download Gambar Hasil",
             data=byte_im,
-            file_name="enhanced_clahe_image.png", # Nama file default saat diunduh
-            mime="image/png" # Tipe MIME untuk file PNG
+            file_name="enhanced_clahe_image.png",
+            mime="image/png" 
         )
     except Exception as e:
-        # Menampilkan pesan error jika pembuatan tombol unduh gagal
+        
         st.error(f"Gagal membuat tombol unduh: {e}")
 else:
-    # Pesan informasi jika belum ada gambar yang diunggah
+    
     st.info("ℹ️ Silakan upload gambar untuk memulai.")
 
-# === Penjelasan Tambahan tentang CLAHE ===
-st.markdown("---") # Garis pemisah
+
+st.markdown("---") 
 st.subheader("Apa itu CLAHE?")
 st.markdown("""
 **Contrast Limited Adaptive Histogram Equalization (CLAHE)** adalah sebuah teknik dalam pengolahan citra yang digunakan untuk meningkatkan kontras pada gambar. Berbeda dengan *Histogram Equalization* biasa yang bekerja secara global pada seluruh gambar, CLAHE bekerja pada bagian-bagian kecil dari gambar yang disebut *tiles*.
